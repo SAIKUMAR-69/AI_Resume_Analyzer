@@ -1,4 +1,5 @@
 cd %USERPROFILE%\Desktop\Projects\ai_resume_analyzer
+python -m venv .venv
 .venv\Scripts\activate
 python -m pip install -r requirements.txt
 

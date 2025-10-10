@@ -10,15 +10,24 @@
         </div>
         <div>
             <div class="muted">Overall Score</div>
-            <div class="score">{{ score }}</div>
+            <div class="score" style="font-size:1.5em; font-weight:bold;">{{ score }}/100</div>
         </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div style="background-color:#e0e0e0; border-radius:8px; height:20px; width:100%; margin-bottom:16px;">
+        <div style="width: {{ score }}%; background-color:#4caf50; height:100%; border-radius:8px;"></div>
     </div>
 
     <h4>Summary</h4>
     <p>{{ summary|safe }}</p>
 
     <h4>Recommendation</h4>
-    <p>{{ recommendation|safe }}</p>
+    <ul>
+        {% for rec in recommendation_list %}
+            <li>{{ rec }}</li>
+        {% endfor %}
+    </ul>
 
     <div style="margin-top:16px">
         <a href="{{ url_for('index') }}" class="btn">Evaluate Another Resume</a>

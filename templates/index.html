@@ -1,30 +1,69 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="grid grid-1">
-    <!-- Resume Analysis Card -->
-    <div class="card">
-      <h2>AI Resume Analyzer</h2>
-      <p class="muted">Upload a resume and select a job to get a tailored fit report.</p>
+<div class="grid grid-1">
+  <!-- Resume Analysis Card -->
+  <div class="card">
+    <h2>AI Resume Analyzer</h2>
+    <p class="muted">Upload a resume and select a job to get a tailored fit report.</p>
 
-      <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data">
-        <label style="margin-top:12px">Your Name</label>
-        <input type="text" name="candidate_name" placeholder="Enter your name" required />
+    <form action="{{ url_for('analyze') }}" method="post" enctype="multipart/form-data">
+      <!-- Candidate Name -->
+      <label style="margin-top:12px">Your Name</label>
+      <input type="text" name="candidate_name" placeholder="Enter your name" required />
 
-        <label style="margin-top:12px">Resume (PDF, DOCX, or TXT)</label>
-        <input type="file" name="resume" required />
+      <!-- Resume Upload -->
+      <label style="margin-top:12px">Resume (PDF, DOCX, or TXT)</label>
+      <input type="file" name="resume" required />
 
-        <label style="margin-top:12px">Target Job</label>
-        <select name="job_id" id="job_id">
-          <option value="custom">-- Custom (paste JD) --</option>
-          {% for j in jobs %}
-            <option value="{{ j.id }}">{{ j.title }}</option>
-          {% endfor %}
-        </select>
+      <!-- Target Job Selection -->
+      <label style="margin-top:12px">Target Job</label>
+      <select name="job_id" id="job_id">
+        <option value="custom">-- Custom (paste JD) --</option>
+        {% for j in jobs %}
+          <option value="{{ j.id }}">{{ j.title }}</option>
+        {% endfor %}
+      </select>
 
-        <div style="margin-top:16px">
-          <button class="btn" type="submit">Analyze Resume →</button>
-        </div>
-      </form>
-    </div>
+      <!-- Submit Button -->
+      <div style="margin-top:16px">
+        <button class="btn" type="submit">Analyze Resume →</button>
+      </div>
+    </form>
   </div>
+
+  {% if summary or recommendation %}
+  <!-- RAG Feedback Card -->
+  <div class="card" style="margin-top:24px;">
+    <h3>AI Feedback (RAG-based)</h3>
+    
+    {% if summary %}
+    <div style="margin-bottom:12px;">
+      <strong>Summary:</strong>
+      <p>{{ summary }}</p>
+    </div>
+    {% endif %}
+
+    {% if recommendation %}
+    <div>
+      <strong>Recommendations:</strong>
+      <ul>
+        {% for line in recommendation.split('\n') %}
+          {% if line.strip() %}
+            <li>{{ line }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {% if score %}
+  <!-- Resume Score Card -->
+  <div class="card" style="margin-top:24px;">
+    <h3>Keyword Match Score</h3>
+    <p>{{ score * 100 | round(2) }}%</p>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}
