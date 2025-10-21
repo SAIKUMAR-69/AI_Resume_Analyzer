@@ -97,23 +97,27 @@ Job Title: {job_title}
 Matched Keywords: {', '.join(matched_keywords)}
 
 Instructions:
--Summary (max 4 lines):
+-Summary (max 5 lines):
 [Concise summary here]
-- Provide a short, small summary paragraph about the candidate's strengths and areas to improve.
-- The summary must be strictly 3 lines, no headings or Markdown formatting.
-- Recommendations (3 bullet points):
+- Provide a concise summary paragraph about the candidate's strengths and areas to improve.
+- The summary must be strictly 5 lines, no headings or Markdown formatting.
+- Recommendations (5 bullet points):
 • First recommendation
 • Second recommendation
 • Third recommendation
+• Fourth recommendation
+• Fifth recommendation
 
 Output format:
 Summary:
-<your 3-line summary>
+<your 5-line summary>
 
 Recommendations:
 • Recommendation 1
 • Recommendation 2
 • Recommendation 3
+• Recommendation 4
+• Recommendation 5
 """
     rag_feedback = chat_completion([{"role": "user", "content": prompt}])
 
@@ -214,7 +218,7 @@ def create_app(test_config=None):
             r.strip("• .: ").strip()  # remove leading bullets, dots, colons, spaces
             for r in ai_recommendations.split("\n") 
             if r.strip()
-        ][1:4]
+        ][1:]
 
         # Persist evaluation
         eval_obj = Evaluation(
